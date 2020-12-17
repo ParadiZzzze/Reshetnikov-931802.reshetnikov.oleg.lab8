@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+    <title>Lab8</title>
+    <meta charset='UTF-8' />
+ </head>
+ <body>
+  <form name="search">
+ </form>
+<form name="table">
+       <input type="button" name="add" value="Добавить элемент"  /><br>
+       <input type="button" name="save" value="Сохранить" />
+</form>
+  <div id="printBlock"></div>
+</body>
+<script>
+var keyBox1 = document.search.firstKey;
+var keyBox2 = document.search.secondKey;
+var printBox = document.table.save;
+var addBox = document.table.add;
+var iter = 0;
+
+function onchange(e){
+printBlock.textContent=null;
+if (iter<=1) {
+  printBlock.textContent += "{\u0022"+document.search.firstKey.value+"\u0022";
+  printBlock.textContent += ":\u0022"+document.search.secondKey.value+"\u0022}";
+}
+else {
+  printBlock.textContent = "{";
+  i=0;
+  while (i<+iter) {
+    printBlock.textContent += "\u0022"+document.search.firstKey[i].value+"\u0022";
+    printBlock.textContent += ":\u0022"+document.search.secondKey[i].value+"\u0022";
+    i++;
+    if (i!=iter) {
+      printBlock.textContent += ",";
+    }
+  }
+  printBlock.textContent += "}";
+}
+
+}
+function plsup(o){
+  var a1, a2, b1, b2,now, next, p3;
+  now = o.parentNode.parentNode;
+  next = now.previousSibling;
+  if (next!=null) {
+    a1 = now.children[0].children[0].value;
+    a2 = now.children[0].children[1].value;
+    b1 = next.children[0].children[0].value;
+    b2 = next.children[0].children[1].value;
+    now.children[0].children[0].value=b1;
+    now.children[0].children[1].value=b2;
+    next.children[0].children[0].value=a1;
+    next.children[0].children[1].value=a2;
+  }
+}
+function plsdown(o){
+  var a1, a2, b1, b2,now, next, p3;
+
+  now = o.parentNode.parentNode;
+  next = now.nextSibling;
+  if (next!=null) {
+    a1 = now.children[0].children[0].value;
+    a2 = now.children[0].children[1].value;
+    b1 = next.children[0].children[0].value;
+    b2 = next.children[0].children[1].value;
+    now.children[0].children[0].value=b1;
+    now.children[0].children[1].value=b2;
+    next.children[0].children[0].value=a1;
+    next.children[0].children[1].value=a2;
+  }
+}
+function plsdelete(o){
+  iter--;
+  o.parentNode.remove();
+}
+
+function add(){
+  iter = iter+1;
+var nodet = document.createElement('tr');
+var node = document.createElement('td');
+node.innerHTML =  "<input type='text' name='firstKey' value=''>";
+node.innerHTML += "<input type='text' name='secondKey' value=''>";
+node.innerHTML += "<input type='button' name='up' value='↑' onClick=plsup(this)>";
+node.innerHTML += "<input type='button' name='down' value='↓' onClick=plsdown(this)>";
+node.innerHTML += "<input type='button' name='del' value='X' onClick=plsdelete(this) >"  ;
+document.search.appendChild(nodet);
+nodet.appendChild(node);
+}
+window.onload = add;
+printBox.onclick = onchange;
+addBox.onclick = add;
+</script>
+</html>
